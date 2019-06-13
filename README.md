@@ -1,10 +1,11 @@
 # Goを学ぶ
 
-- [はじめてのGo―シンプルな言語仕様，型システム，並行処理](http://gihyo.jp/dev/feature/01/go_4beginners/0001?page=1)
+- [はじめてのGo―シンプルな言語仕様，型システム，並行処理](http://gihyo.jp/dev/feature/01/go_4beginners)
 
 ## Docs
 
 - [基本文法](./docs/chapter02.md)
+- [型システム 〜型を用いた安全なプログラミング〜](./docs/chapter03.md)
 
 ## Goでhello world
 
