@@ -413,12 +413,15 @@ func main() {
 関数を変数に代入したり、関数を関数の引数に渡すこともできる。
 
 ```go
-var sam = func(i, j int) {
-  fmt.Println(i + j)
+func fn(arr [4]string) {
+	arr[0] = "x"
+	fmt.Println(arr) // [x b c d]
 }
 
 func main() {
-  sum(2, 4)
+	arr := [4]string{"a", "b", "c", "d"}
+	fn(arr)
+	fmt.Println(arr) // [a b c d]
 }
 ```
 
@@ -432,7 +435,7 @@ Goの配列は固定長。
 var arr1 [4]string
 ```
 
-アクセスは他の言語同様に添字でアクセスする。
+アクセスは他の言語同様にインデックスでアクセスする。
 
 ```go
 var arr1 [4]string
@@ -453,3 +456,259 @@ arr := [...]string{"a", "b", "c", "d"}
 ```
 
 ### 配列の型は長さも情報として含む
+
+配列の型は長さも情報として含むため、以下の`arr1`と`arr2`は、要素の型は同じstringだが長さが違うため配列としては別の型になる。
+
+```go
+var arr1 [4]string
+var arr2 [5]string
+```
+
+そのため、以下のような`[4]string`型を引数にとる関数へ型のあわない`arr2`を渡すとコンパイルエラーになる。
+
+```go
+func fn(arr [4]string) {
+	fmt.Println(arr)
+}
+
+func main() {
+	var arr1 [4]string
+	var arr2 [5]string
+
+	fn(arr1) // ok
+	fn(arr2) // コンパイルエラー
+}
+```
+
+### 関数に配列を渡す場合は値渡しになる
+
+関数に配列を渡すと、配列のコピーが渡される。
+
+そのため、もとの配列には変更は反映されない。
+
+```go
+func fn(arr [4]string) {
+  arr[0] = "x"
+  fmt.Println(arr) // [x b c d]
+}
+
+func main() {
+	arr := [4]string{"a", "b", "c", "d"}
+  fn(arr)
+  // もとの配列には変更は反映されない
+	fmt.Println(arr) // [a b c d]
+}
+```
+
+### ポインタを渡すことで参照渡しもできる
+
+```go
+func fnP(arr *[4]int) {
+  for i, _ := range arr {
+    arr[i] = 0
+  }
+  fmt.Println(arr) // [0, 0, 0, 0]
+}
+
+func main() {
+  arr := [4]int{1, 2, 3, 4}
+  fnP(&arr)
+  fmt.Println(arr) // [0, 0, 0, 0]
+}
+```
+
+## スライス
+
+可変長の配列のこと（JavaScriptで利用している配列はこっち）。
+
+以下のように宣言する。
+
+```go
+var s []string
+```
+
+初期化を行う場合は、配列と同じように書ける。
+
+```go
+s := []string{"a", "b", "c", "d"}
+fmt.Println(s[0]) // "a"
+```
+
+### append()
+
+スライスの末尾に値を追加し、その結果を返す関数。
+
+```go
+var s []string
+// 追加した結果を返す
+s = append(s, "a")
+s = append(s, "b")
+// 複数の値も追加できる
+s = append(s, "c", "d")
+fmt.Println(s) // [a b c d]
+```
+
+以下のようにスライスに別のスライスの値を展開できる。
+
+```go
+s1 := []string {"a", "b"}
+s2 := []string {"c", "d"}
+s1 = append(s1, s2)
+fmt.Println(s1) // [a b c d]
+```
+
+### range
+
+配列やスライスの値を反復処理できる構文。`for`と併用する。
+
+```go
+var arr [4]string
+
+arr[0] = "a"
+arr[1] = "b"
+arr[2] = "c"
+arr[3] = "d"
+
+for i, s := range arr {
+	// i = インデックス, s = 値
+	fmt.Println(i, s)
+}
+```
+
+stringやマップなどに対しても利用できる。
+
+### 値の切り出し
+
+```go
+s := []int{0, 1, 2, 3, 4, 5}
+
+// インデックス2から4までを切り出す、終点は含まない
+fmt.Println(s[2:4]) // [2 3]
+
+// インデックス0からスライスの長さ文を切り出す（要は全て切り出す）
+fmt.Println(s[0:len(s)]) // [0 1 2 3 4 5]
+
+// 始点を省略しているため、先頭から切り出す
+fmt.Println(s[:3]) // [0 1 2]
+
+// 終点を省略しているため、末尾まで切り出す
+fmt.Println(s[3:]) // [3 4 5]
+
+// 全部
+fmt.Println(s[:]) // [0 1 2 3 4 5]
+```
+
+### 可変長引数
+
+引数を以下のように指定すると、可変長引数として任意の数の引数をその型のスライスとして受け取ることができる。
+
+```go
+// numsは[]int型になる
+func sum(nums, ...int) (result int) {
+  for _, n := range nums {
+    result += n
+  }
+  return
+}
+
+func main() {
+  fmt.Println(sum(1, 2, 3, 4)) // 10
+}
+```
+
+上記の場合、`1, 2, 3, 4`を渡しており、int型のスライス（`[]int{1, 2, 3, 4}`）として受け取る。
+
+## マップ
+
+値をKey-Value（キーバリュー）型で保存するデータ構造（JavaScriptのオブジェクトみたいなやつ）。
+
+### 宣言と初期化
+
+以下はint型のキーにstring型の値を格納するマップの宣言。
+
+```go
+var month map[int]string = map[int]string{}
+// 以下はNG？
+// var month = map[int]string{}
+```
+
+以下のようにキーを指定して値を保存する。
+
+```go
+month[1] = "January"
+month[2] = "February"
+fmt.Println(month) // map[1:January 2:February]
+```
+
+宣言と初期化は以下のように記述する。
+
+```go
+month := map[int]string{
+  1: "January",
+  2: "February"  
+}
+```
+
+### マップの操作
+
+#### 値を取得する
+
+キーを指定すれば、マップの値を取得できる。
+
+```go
+month := map[int]string{
+  1: "January",
+  2: "February",
+}
+
+jan := month[1]
+fmt.Println(jan) // January
+```
+
+#### キーの存在をチェックする
+
+2つめの戻り値も受け取るようにすると、指定したキーがこのマップに存在するかどうかをboolで返す。
+
+```go
+month := map[int]string{
+  1: "January",
+  2: "February",
+}
+
+_, ok := month[1]
+if ok {
+  // データがあった場合
+}
+```
+
+#### 指定したキーのデータを削除する
+
+マップからデータを消す場合は`delete()`を利用する。
+
+```go
+month := map[int]string{
+  1: "January",
+  2: "February",
+}
+delete(month, 1)
+fmt.Println(month) //  map[1:January]
+```
+
+#### 反復処理をする
+
+スライスと同様で、`range`を利用すればfor文で反復処理が可能。
+
+しかし、マップの場合、処理の順番は保証されないため注意。
+
+```go
+month := map[int]string{
+  1: "January",
+  2: "February"  
+}
+
+for key, value := range month {
+  fmt.Printf("%d %s\n", key, value)
+}
+// 1 January
+// 2 February
+```
