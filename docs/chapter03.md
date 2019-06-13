@@ -62,26 +62,26 @@ type Task struct {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func main() {
-	var task Task = Task{
-		ID:     1,
-		Detail: "buy the milk",
-		done:   true,
-	}
-	// 型推論使えるので以下のようにも書ける
-	// task := Task{
-	// 	ID:     1,
-	// 	Detail: "buy the milk",
-	// 	done:   true,
-	// }
-	fmt.Println(task.ID)     // 1
-	fmt.Println(task.Detail) // "buy the milk"
-	fmt.Println(task.done)   // true
+  var task Task = Task{
+    ID:     1,
+    Detail: "buy the milk",
+    done:   true,
+  }
+  // 型推論使えるので以下のようにも書ける
+  // task := Task{
+  //   ID:     1,
+  //   Detail: "buy the milk",
+  //   done:   true,
+  // }
+  fmt.Println(task.ID)     // 1
+  fmt.Println(task.Detail) // "buy the milk"
+  fmt.Println(task.done)   // true
 }
 ```
 
@@ -91,18 +91,18 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func main() {
-	var task Task = Task{1, "buy the milk", true}
-	// 型推論使えるので以下のようにも書ける
-	// task := Task{1, "buy the milk", true}
-	fmt.Println(task.ID)     // 1
-	fmt.Println(task.Detail) // "buy the milk"
-	fmt.Println(task.done)   // true
+  var task Task = Task{1, "buy the milk", true}
+  // 型推論使えるので以下のようにも書ける
+  // task := Task{1, "buy the milk", true}
+  fmt.Println(task.ID)     // 1
+  fmt.Println(task.Detail) // "buy the milk"
+  fmt.Println(task.done)   // true
 }
 ```
 
@@ -112,16 +112,16 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func main() {
-	task := Task{}
-	fmt.Println(task.ID)     // 0
-	fmt.Println(task.Detail) // ""
-	fmt.Println(task.done)   // false
+  task := Task{}
+  fmt.Println(task.ID)     // 0
+  fmt.Println(task.Detail) // ""
+  fmt.Println(task.done)   // false
 }
 ```
 
@@ -131,9 +131,9 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 var task Task = Task{} // Task型
@@ -146,9 +146,9 @@ var task *Task = &Task{} // Taskのポインタ型型（渡されたアドレス
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func Finish(task Task) {
@@ -170,9 +170,9 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 // Taskポインタ型のポインタ変数を受け取る
@@ -194,24 +194,24 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func Finish(task *Task) {
-	task.done = true
+  task.done = true
 }
 
 func main() {
-	// ↓は`var task *Task = new(Task)
+  // ↓は`var task *Task = new(Task)
   task := new(Task)
   task.Detail = "buy the milk"
   Finish(task)
 
   fmt.Println(task.ID) // 0
   fmt.Println(task.Detail) // "buy the milk"
-	fmt.Println(task.done) // true
+  fmt.Println(task.done) // true
 }
 ```
 
@@ -247,30 +247,30 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func NewTask(id int, detail string) *Task {
-	task := &Task{
-		ID:     id,
-		Detail: detail,
-		done:   false,
-	}
-	return task
+  task := &Task{
+    ID:     id,
+    Detail: detail,
+    done:   false,
+  }
+  return task
 }
 
 // taskという名前のTask型のレシーバーを持つことを意味する
 // Task型にString()メソッドが定義される
 func (task Task) String() string {
-	str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
-	return str
+  str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
+  return str
 }
 
 func main() {
-	task := NewTask(1, "buy the milk")
-	fmt.Printf("%s", task.String()) // 1) buy the milk
+  task := NewTask(1, "buy the milk")
+  fmt.Printf("%s", task.String()) // 1) buy the milk
 }
 ```
 
@@ -281,24 +281,24 @@ type Calc struct{ value, value2 int }
 
 // 関数
 func Add(q Calc) int {
-	return q.value + q.value2
+  return q.value + q.value2
 }
 
 // Calc型のレシーバーを受け取るので、Calc型でこのメソッドが利用できるようになる
 func (p Calc) Add() int {
-	return p.value + p.value2
+  return p.value + p.value2
 }
 
 // Calc型のコピーがレシーバーとして渡されるため、呼び出し元は変更されない
 func (p Calc) increment() int {
-	p.value = p.value + 1
+  p.value = p.value + 1
 }
 
 func main() {
-	q := Calc{3, 2}     // 3 + 2 = 5
-	fmt.Println(Add(q)) // 5
+  q := Calc{3, 2}     // 3 + 2 = 5
+  fmt.Println(Add(q)) // 5
 
-	p := Calc{3, 2}      // 3 + 2 = 5
+  p := Calc{3, 2}      // 3 + 2 = 5
   fmt.Println(p.Add()) // 5
   p.increment()
   fmt.Println(p.value) // 3
@@ -311,20 +311,20 @@ func main() {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 // Taskのポインタがレシーバーとして渡されるため、呼び出し元が変更される
 func (task *Task) Finish() {
-	task.done = true
+  task.done = true
 }
 
 func main() {
-	task := new(Task)
-	task.Finish()
-	fmt.Println(task.done) // true
+  task := new(Task)
+  task.Finish()
+  fmt.Println(task.done) // true
 }
 ```
 
@@ -356,38 +356,38 @@ Goでは、Javaのimplements構文のように、インターフェースを実�
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func NewTask(id int, detail string) *Task {
-	task := &Task{
-		ID:     id,
-		Detail: detail,
-		done:   false,
-	}
-	return task
+  task := &Task{
+    ID:     id,
+    Detail: detail,
+    done:   false,
+  }
+  return task
 }
 
 func (task Task) String() string {
-	str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
-	return str
+  str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
+  return str
 }
 
 type Stringer interface {
-	String() string
+  String() string
 }
 
 // Stringer型（String()メソッドが実装された型）を引数にとる
 func Print(stringer Stringer) {
-	fmt.Println(stringer.String())
+  fmt.Println(stringer.String())
 }
 
 func main() {
   task := NewTask(1, "buy the milk")
   // taskにはString()メソッドが実装されているため、Print()に渡すことができる
-	Print(task) // 1) buy the milk
+  Print(task) // 1) buy the milk
 }
 ```
 
@@ -427,9 +427,9 @@ Goでは継承がサポートされていない。
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 ```
 
@@ -439,20 +439,20 @@ type Task struct {
 
 ```go
 type User struct {
-	FirstName string
-	LastName  string
+  FirstName string
+  LastName  string
 }
 
 func (u *User) FullName() string {
-	fullName := fmt.Sprintf("%s %s", u.FirstName, u.LastName)
-	return fullName
+  fullName := fmt.Sprintf("%s %s", u.FirstName, u.LastName)
+  return fullName
 }
 
 func NewUser(firstName, lastName string) *User {
-	return &User{
-		FirstName: firstName,
-		LastName:  lastName,
-	}
+  return &User{
+    FirstName: firstName,
+    LastName:  lastName,
+  }
 }
 ```
 
@@ -460,48 +460,48 @@ func NewUser(firstName, lastName string) *User {
 
 ```go
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
-	*User  // User構造体を埋め込む
+  ID     int
+  Detail string
+  done   bool
+  *User  // User構造体を埋め込む
 }
 
 type User struct {
-	FirstName string
-	LastName  string
+  FirstName string
+  LastName  string
 }
 
 func (u *User) FullName() string {
-	fullName := fmt.Sprintf("%s %s", u.FirstName, u.LastName)
-	return fullName
+  fullName := fmt.Sprintf("%s %s", u.FirstName, u.LastName)
+  return fullName
 }
 
 func NewUser(firstName, lastName string) *User {
-	return &User{
-		FirstName: firstName,
-		LastName:  lastName,
-	}
+  return &User{
+    FirstName: firstName,
+    LastName:  lastName,
+  }
 }
 
 func NewTask(id int, detail, firstName, lastName string) *Task {
-	task := &Task{
-		ID:     id,
-		Detail: detail,
-		done:   false,
-		User:   NewUser(firstName, lastName),
-	}
-	return task
+  task := &Task{
+    ID:     id,
+    Detail: detail,
+    done:   false,
+    User:   NewUser(firstName, lastName),
+  }
+  return task
 }
 
 func main() {
-	task := NewTask(1, "buy the milk", "soar", "flat")
-	// TaskにUserのフィールドが埋め込まれている
-	fmt.Println(task.FirstName) // soar
-	fmt.Println(task.LastName) // flat
-	// TaskにUserのメソッドが埋め込まれている
-	fmt.Println(task.FullName()) // soar flat
-	// Taskから埋め込まれたUser自体にもアクセス可能
-	fmt.Println(task.User) // ${soar flat}
+  task := NewTask(1, "buy the milk", "soar", "flat")
+  // TaskにUserのフィールドが埋め込まれている
+  fmt.Println(task.FirstName) // soar
+  fmt.Println(task.LastName) // flat
+  // TaskにUserのメソッドが埋め込まれている
+  fmt.Println(task.FullName()) // soar flat
+  // Taskから埋め込まれたUser自体にもアクセス可能
+  fmt.Println(task.User) // ${soar flat}
 }
 ```
 
@@ -567,16 +567,16 @@ func Print(value interface{}) {
   // 第１戻り値には、判定が成功した場合にその型に変換された値が返る
   // 第２戻り値には、判定が成功したかどうかの真偽値が返る
   s, ok := value.(string)
-	if ok {
-		fmt.Printf("value is string: %s\n", s)
-	} else {
-		fmt.Printf("value is not string\n")
-	}
+  if ok {
+    fmt.Printf("value is string: %s\n", s)
+  } else {
+    fmt.Printf("value is not string\n")
+  }
 }
 
 func main() {
-	Print("abc") // value is string: abc
-	Print(10)    // value is not string
+  Print("abc") // value is string: abc
+  Print(10)    // value is not string
 }
 ```
 
@@ -586,45 +586,45 @@ Type Assertionは単一の型に対する検査しかできないが、Type Swit
 
 ```go
 type Stringer interface {
-	String() string
+  String() string
 }
 
 type Task struct {
-	ID     int
-	Detail string
-	done   bool
+  ID     int
+  Detail string
+  done   bool
 }
 
 func NewTask(id int, detail string) *Task {
-	task := &Task{
-		ID:     id,
-		Detail: detail,
-		done:   false,
-	}
-	return task
+  task := &Task{
+    ID:     id,
+    Detail: detail,
+    done:   false,
+  }
+  return task
 }
 
 func (task Task) String() string {
-	str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
-	return str
+  str := fmt.Sprintf("%d) %s", task.ID, task.Detail)
+  return str
 }
 
 func Print(value interface{}) {
-	switch v := value.(type) {
-	case string:
-		fmt.Printf("value is string: %s\n", v)
-	case int:
-		fmt.Printf("value is int: %d\n", v)
-	case Stringer:
-		fmt.Printf("value is Stringer: %s\n", v)
-	}
+  switch v := value.(type) {
+  case string:
+    fmt.Printf("value is string: %s\n", v)
+  case int:
+    fmt.Printf("value is int: %d\n", v)
+  case Stringer:
+    fmt.Printf("value is Stringer: %s\n", v)
+  }
 }
 
 func main() {
-	task := NewTask(1, "buy the milk")
+  task := NewTask(1, "buy the milk")
 
-	Print("abc") // value is string: abc
-	Print(10)    // value is int: 10
-	Print(task)  //value is Stringer: 1) buy the milk
+  Print("abc") // value is string: abc
+  Print(10)    // value is int: 10
+  Print(task)  //value is Stringer: 1) buy the milk
 }
 ```
