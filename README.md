@@ -6,6 +6,8 @@
 
 - [基本文法](./docs/chapter02.md)
 - [型システム 〜型を用いた安全なプログラミング〜](./docs/chapter03.md)
+- [標準パッケージ 〜JSON、ファイル、HTTP、HTMLを扱う〜](./docs/chapter04.md)
+- [並行プログラミング 〜ゴルーチンとチャネルを使いこなす〜](./docs/chapter05.md)
 
 ## Goでhello world
 
