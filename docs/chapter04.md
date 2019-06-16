@@ -126,13 +126,6 @@ func main() {
 ### ファイルの生成
 
 ```go
-package main
-
-import (
-	"log"
-	"os"
-)
-
 func main() {
 	// ファイルを生成
 	// ファイル名を渡すと*os.File構造体へのポインタを取得できる
@@ -151,7 +144,7 @@ func main() {
 
 ### ファイルへの書き込み
 
-`*os.File`には`io.Writer`インターフェースが実装されており、以下のように定義されている。
+`*os.File`には`io.Writer`インターフェースが実装されており、以下のメソッドが定義されている。
 
 ```go
 type Writer interface {
@@ -164,13 +157,6 @@ type Writer interface {
 以下は指定したファイルにhello worldを書き込む例。
 
 ```go
-package main
-
-import (
-	"log"
-	"os"
-)
-
 func main() {
 	file, err := os.Create("./file.txt")
 	if err != nil {
@@ -184,12 +170,50 @@ func main() {
   // WriteStringを利用すれば[]byteに変換する必要はない
   // message :=  file.WriteString("hello world\n")
   
-
 	// 書き込みをする
 	_, err = file.Write(message)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+```
+
+### ファイルからの読み出し
+
+`*os.File`には`io.Reader`インターフェースが実装されており、以下のメソッドが定義されている。
+
+```go
+type Reader interface {
+	Read(p []byte) (n int, err error)
+}
+```
+
+`Read()`は、読みだしたデータを格納するために十分な長さを持ったスライスを渡すと、そこにデータが格納される。
+
+今回、は"hello world\n"という12byteのデータを読みだすため、長さが12のbyteのスライスを用意してそこにデータを読み出す。そして、戻り値として読みだしたバイト数とエラーを返す。
+
+```go
+func main() {
+	// ファイルを開く
+	file, err := os.Open("./file.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	// 12byte格納可能なスライスを用意する
+	// make()でスライスを用意できる
+	// make(型, 長さ, 容量)
+	message := make([]byte, 12)
+
+	// ファイル内のデータをスライスに読み出す
+	_, err = file.Read(message)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 文字列にして表示
+	fmt.Println(string(message))
 }
 ```
 
